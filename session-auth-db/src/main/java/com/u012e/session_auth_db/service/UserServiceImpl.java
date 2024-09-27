@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(
             UserRepository userRepository,
             ModelMapper modelMapper,
-            @Qualifier("postgres") SessionService sessionService
+            SessionService sessionService
     ) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;

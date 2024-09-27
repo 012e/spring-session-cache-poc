@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
@@ -20,6 +22,7 @@ import java.util.Optional;
 @Service
 @Qualifier("postgres")
 @Slf4j
+@ConditionalOnProperty(value = "session.storage", havingValue = "database-only", matchIfMissing = false)
 public class PostgresSessionService implements SessionService {
     private final DbSessionRepository sessionRepository;
     private final UserRepository userRepository;
