@@ -1,3 +1,20 @@
+# Demo cache
+
+## Chạy
+
+### Không có cache
+
+Trong thư mục `session-auth-db`, chạy lệnh
+```sh
+docker compose up
+```
+
+### Có cache
+
+TODO
+
+## Các Endpoint
+
 Demo gồm các endpoint:
 - `/`: trả về hello world
 - `/secret`: trả về dữ liệu bí mật, chỉ truy cập được sau khi đăng nhập
