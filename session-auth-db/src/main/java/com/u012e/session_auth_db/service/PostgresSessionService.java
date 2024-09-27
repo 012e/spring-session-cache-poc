@@ -39,7 +39,7 @@ public class PostgresSessionService implements SessionService {
     }
 
     @Override
-    public SessionDto createAndSetSession(String username, HttpServletResponse response) throws IllegalArgumentException {
+    public SessionDto createSession(String username) throws IllegalArgumentException {
         if (userRepository.findByUsername(username).isEmpty()) {
             throw new InvalidCredentialsException("User not found");
         }
@@ -49,9 +49,6 @@ public class PostgresSessionService implements SessionService {
 
         sessionRepository.save(session);
 
-        var cookie = new Cookie("SESSION_TOKEN", token);
-        cookie.setPath("/");
-        response.addCookie(cookie);
         return dto;
     }
 
@@ -63,7 +60,7 @@ public class PostgresSessionService implements SessionService {
     }
 
     @Override
-    public void invalidateSession(HttpServletRequest request, HttpServletResponse response) {
+    public void invalidateSession(HttpServletRequest request) {
         var request_cookies = request.getCookies();
         if (request_cookies == null) {
             return;
@@ -75,11 +72,6 @@ public class PostgresSessionService implements SessionService {
         }
         var token = tokenCookie.getValue();
 
-        var cookie = new Cookie("SESSION_TOKEN", null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-
-        response.addCookie(cookie);
         sessionRepository.deleteByToken(token);
     }
 }

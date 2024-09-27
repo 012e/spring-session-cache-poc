@@ -7,9 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 public interface SessionService {
-    SessionDto createAndSetSession(String username, HttpServletResponse response);
+    SessionDto createSession(String username);
 
     Optional<SessionDto> getSession(String token);
 
-    void invalidateSession(HttpServletRequest request, HttpServletResponse response);
+    void invalidateSession(HttpServletRequest request);
 }

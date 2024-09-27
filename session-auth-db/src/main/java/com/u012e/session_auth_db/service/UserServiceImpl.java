@@ -4,6 +4,7 @@ import com.u012e.session_auth_db.dto.UserDto;
 import com.u012e.session_auth_db.exception.InvalidCredentialsException;
 import com.u012e.session_auth_db.model.User;
 import com.u012e.session_auth_db.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final SessionService sessionService;
+    private final SessionService postresSessionService;
 
     public UserServiceImpl(
             UserRepository userRepository,
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     ) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
-        this.sessionService = sessionService;
+        this.postresSessionService = sessionService;
     }
 
     @Override
@@ -48,11 +49,21 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(userDto.getPassword())) {
             throw new InvalidCredentialsException();
         }
-        sessionService.createAndSetSession(user.getUsername(), response);
+
+        var sessionDto = postresSessionService.createSession(user.getUsername());
+        var token = sessionDto.getToken();
+        var cookie = new Cookie("SESSION_TOKEN", token);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        sessionService.invalidateSession(request, response);
+        var cookie = new Cookie("SESSION_TOKEN", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        postresSessionService.invalidateSession(request);
     }
 }
