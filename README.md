@@ -9,6 +9,8 @@ Trong thư mục `session-auth-db`, chạy lệnh
 docker compose up
 ```
 
+Webserver của Spring sẽ chạy ở localhost:8080
+
 ### Có cache
 
 TODO
