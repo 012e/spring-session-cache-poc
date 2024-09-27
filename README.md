@@ -4,7 +4,12 @@
 
 ### Không có cache
 
-Trong thư mục `session-auth-db`, chạy lệnh
+Trong thư mục `session-auth-db`, chạy lệnh sau để build các image
+```sh
+docker compose build
+```
+
+Và để bắt đầu chạy webserver và db thì chạy:
 ```sh
 docker compose up
 ```
