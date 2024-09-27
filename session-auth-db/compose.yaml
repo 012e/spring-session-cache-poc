@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: app
+    ports:
+      - '8080:8080'
+    networks:
+      - default-network
+
+  postgres:
+    image: 'postgres:latest'
+    container_name: db
+    environment:
+      - 'POSTGRES_PASSWORD=user'
+      - 'POSTGRES_USER=user'
+      - 'POSTGRES_DB=postgres'
+    ports:
+      - '5432:5432'
+    networks:
+      - default-network
+networks:
+    default-network: {}
