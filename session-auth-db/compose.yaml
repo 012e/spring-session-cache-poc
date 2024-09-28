@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     container_name: app
-    command: -Dspring-boot.run.arguments=--session.storage="database-only"
+    command: -Dspring-boot.run.arguments=--session.storage="cache-only"
     ports:
       - '8080:8080'
     networks:
@@ -21,5 +21,14 @@ services:
       - '5432:5432'
     networks:
       - default-network
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - default-network
+
 networks:
     default-network: {}

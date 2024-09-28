@@ -19,7 +19,7 @@ public class SessionAuthDbApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		log.info("Supported session storage: database-only, redis-only, database-redis");
+		log.info("Supported session storage: database-only, cache-only, database-cache");
 		log.info("Session storage: {}", sessionStorage);
 	}
 }

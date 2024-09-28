@@ -4,13 +4,14 @@ import com.u012e.session_auth_db.dto.UserDto;
 import com.u012e.session_auth_db.exception.InvalidCredentialsException;
 import com.u012e.session_auth_db.model.User;
 import com.u012e.session_auth_db.repository.UserRepository;
+import com.u012e.session_auth_db.service.session.manager.SessionManager;
+import com.u012e.session_auth_db.service.session.provider.SessionProvider;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,16 +20,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final SessionService postresSessionService;
+    private final SessionManager sessionManager;
 
     public UserServiceImpl(
             UserRepository userRepository,
             ModelMapper modelMapper,
-            SessionService sessionService
+            SessionManager sessionManager
     ) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
-        this.postresSessionService = sessionService;
+        this.sessionManager = sessionManager;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidCredentialsException();
         }
 
-        var sessionDto = postresSessionService.createSession(user.getUsername());
+        var sessionDto = sessionManager.createSession(user.getUsername());
         var token = sessionDto.getToken();
         var cookie = new Cookie("SESSION_TOKEN", token);
         cookie.setPath("/");
@@ -64,6 +65,6 @@ public class UserServiceImpl implements UserService {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        postresSessionService.invalidateSession(request);
+        sessionManager.invalidateSession(request);
     }
 }

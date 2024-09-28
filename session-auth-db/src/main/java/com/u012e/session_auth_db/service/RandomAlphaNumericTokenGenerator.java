@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RandomAlphaNumericTokenGenerator implements TokenGenerator {
-    private final static String ALPHA_NUMERIC_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";
+    private final static String ALPHA_NUMERIC_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
     @Override
     public String generateToken(int length) {
         var  builder = new StringBuilder();

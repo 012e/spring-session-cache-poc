@@ -1,35 +1,30 @@
-package com.u012e.session_auth_db.service;
+package com.u012e.session_auth_db.service.session.provider;
 
 import com.u012e.session_auth_db.dto.SessionDto;
 import com.u012e.session_auth_db.exception.InvalidCredentialsException;
 import com.u012e.session_auth_db.model.Session;
 import com.u012e.session_auth_db.repository.DbSessionRepository;
 import com.u012e.session_auth_db.repository.UserRepository;
-import jakarta.servlet.http.Cookie;
+import com.u012e.session_auth_db.service.TokenGenerator;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-@Qualifier("postgres")
+@Qualifier("database")
 @Slf4j
-@ConditionalOnProperty(value = "session.storage", havingValue = "database-only", matchIfMissing = false)
-public class PostgresSessionService implements SessionService {
+public class PostgresSessionProvider implements SessionProvider {
     private final DbSessionRepository sessionRepository;
     private final UserRepository userRepository;
     private final TokenGenerator tokenGenerator;
     private final ModelMapper mapper;
 
-    public PostgresSessionService(
+    public PostgresSessionProvider(
             DbSessionRepository sessionRepository,
             UserRepository userRepository,
             TokenGenerator tokenGenerator,
