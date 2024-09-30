@@ -31,7 +31,7 @@ TODO
 1. Tạo username, pasword ngẫu nhiên
 2. Đăng ký với username, password đó
 3. Đăng nhập với username, password đó
-4. Truy cập `/auth/secret` để đọc thông tin bí mật
+4. Truy cập `/auth/secret` để đọc thông tin bí mật (ngẫu nhiên từ 1-30 lần)
 5. Đăng xuất
 
 ### Cách chạy benchmark

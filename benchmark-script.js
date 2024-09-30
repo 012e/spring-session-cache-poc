@@ -71,6 +71,10 @@ function generateRandomString(minLength, maxLength) {
   return result;
 }
 
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const jsonParam = {
   headers: {
     "Content-Type": "application/json",
@@ -96,12 +100,15 @@ export default function () {
     "login response is 200": (r) => r.status === 200,
   });
 
-  let secretResult = http.get(`${url}/secret`);
-  check(secretResult, {
-    "secret response is 200": (r) => r.status === 200,
-    "secret data is correct": (r) =>
-      r.body === JSON.stringify({ message: "super secret message" }),
-  });
+  const totalSecretRequests = randomNumber(1, 30);
+  for (let i = 0; i < totalSecretRequests; i++) {
+    let secretResult = http.get(`${url}/secret`);
+    check(secretResult, {
+      "secret response is 200": (r) => r.status === 200,
+      "secret data is correct": (r) =>
+        r.body === JSON.stringify({ message: "super secret message" }),
+    });
+  }
 
   let logoutResult = http.get(`${url}/auth/logout`);
   check(logoutResult, {
