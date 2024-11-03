@@ -1,7 +1,9 @@
 package com.u012e.session_auth_db.configuration;
 
 import com.u012e.session_auth_db.exception.InvalidCredentialsException;
+import com.u012e.session_auth_db.utils.GenericResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,27 +16,37 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidCredentialsException.class)
-    public Map<String, String> handleInvalidArgument(InvalidCredentialsException exception) {
-        Map<String, String> map =  new HashMap<>();
-        map.put("message", exception.getMessage());
-        return map;
+    public ResponseEntity<GenericResponse<HashMap<String, String>>> handleInvalidArgument(InvalidCredentialsException exception) {
+        var data = GenericResponse.<HashMap<String, String>>builder()
+                .message(exception.getMessage())
+                .success(false)
+                .build();
+        return new ResponseEntity<>(data, HttpStatus.UNAUTHORIZED);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public Map<String, String> handleInvalidArgument(IllegalArgumentException exception) {
-        Map<String, String> map =  new HashMap<>();
-        map.put("message", exception.getMessage());
-        return map;
+    public ResponseEntity<GenericResponse<HashMap<String, String>>> handleInvalidArgument(IllegalArgumentException exception) {
+        var data = GenericResponse.<HashMap<String, String>>builder()
+                .message(exception.getMessage())
+                .success(false)
+                .build();
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException exception) {
+    public ResponseEntity<GenericResponse<HashMap<String, String>>> handleInvalidArgument(MethodArgumentNotValidException exception) {
         Map<String, String> map =  new HashMap<>();
         exception.getBindingResult().getFieldErrors().forEach(fieldError -> {
             map.put(fieldError.getField(), fieldError.getDefaultMessage());
         });
-        return map;
+
+        var data = GenericResponse.<HashMap<String, String>>builder()
+                .message("Invalid arguments")
+                .data((HashMap<String, String>) map)
+                .success(false)
+                .build();
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 }

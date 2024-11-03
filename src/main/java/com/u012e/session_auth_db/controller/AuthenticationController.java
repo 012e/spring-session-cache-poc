@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping(path = "/auth")
 public class AuthenticationController {
 
     private final UserService userService;
@@ -20,7 +21,7 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public Map<String, String> createUser(@NotNull @RequestBody UserDto userDto) {
         userService.register(userDto);
 
@@ -29,7 +30,7 @@ public class AuthenticationController {
         return map;
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public Map<String, String> login(@NotNull @RequestBody UserDto userDto, HttpServletResponse response) {
         userService.login(userDto, response);
 
@@ -38,7 +39,7 @@ public class AuthenticationController {
         return map;
     }
 
-    @GetMapping("/auth/logout")
+    @GetMapping("/logout")
     public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response) {
         userService.logout(request, response);
 
