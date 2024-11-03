@@ -44,7 +44,6 @@ k6 run benchmark-script.js
 ## Các Endpoint
 
 Demo gồm các endpoint:
-- `/`: trả về hello world
 - `/secret`: trả về dữ liệu bí mật, chỉ truy cập được sau khi đăng nhập
 - `/auth/register`: Đăng ký, nhận vào thông tin người dùng trong body với dạng json gồm `username` và `password`.
 Ví dụ body: `{"username": "hello", "password": "world"}`.
