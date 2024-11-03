@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     container_name: app
-    command: -Dspring-boot.run.arguments=--session.storage="cache-only"
+    command: --session.storage="cache-only"
     ports:
       - '8080:8080'
     networks:

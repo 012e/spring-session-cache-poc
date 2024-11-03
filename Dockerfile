@@ -4,8 +4,9 @@ WORKDIR /app
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
+RUN ./mvnw verify --fail-never
 
 COPY src ./src
+RUN ./mvnw package -DskipTests -o
 
-ENTRYPOINT ["./mvnw", "spring-boot:run"]
+ENTRYPOINT ["java", "-jar", "./target/spring-cache-poc.jar"]
