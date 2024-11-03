@@ -2,10 +2,10 @@ package com.u012e.session_auth_db.controller;
 
 import com.u012e.session_auth_db.dto.UserDto;
 import com.u012e.session_auth_db.service.UserService;
+import com.u012e.session_auth_db.utils.GenericResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -22,29 +22,40 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public Map<String, String> createUser(@NotNull @RequestBody UserDto userDto) {
+    public GenericResponse<Map<String, String>> createUser(@NotNull @RequestBody UserDto userDto) {
         userService.register(userDto);
 
-        var map = new HashMap<String, String>();
-        map.put("message", "Created new user");
-        return map;
+        var body = GenericResponse.<Map<String, String>>builder()
+                .message("user created")
+                .data(null)
+                .success(true)
+                .build();
+        return body;
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@NotNull @RequestBody UserDto userDto, HttpServletResponse response) {
+    public GenericResponse<Map<String, String>> login(@NotNull @RequestBody UserDto userDto, HttpServletResponse response) {
         userService.login(userDto, response);
 
-        var map = new HashMap<String, String>();
-        map.put("message", "User logged in");
-        return map;
+        var body = GenericResponse.<Map<String, String>>builder()
+                .message("user logged in")
+                .data(null)
+                .success(true)
+                .build();
+
+        return body;
     }
 
     @GetMapping("/logout")
-    public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public GenericResponse<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
         userService.logout(request, response);
 
-        var map = new HashMap<String, String>();
-        map.put("message", "User logged out");
-        return map;
+        var body = GenericResponse.<Map<String, String>>builder()
+                .message("user logged out")
+                .data(null)
+                .success(true)
+                .build();
+
+        return body;
     }
 }

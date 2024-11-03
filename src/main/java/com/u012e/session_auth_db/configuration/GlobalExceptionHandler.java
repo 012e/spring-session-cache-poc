@@ -17,21 +17,21 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<GenericResponse<HashMap<String, String>>> handleInvalidArgument(InvalidCredentialsException exception) {
-        var data = GenericResponse.<HashMap<String, String>>builder()
+        var body = GenericResponse.<HashMap<String, String>>builder()
                 .message(exception.getMessage())
                 .success(false)
                 .build();
-        return new ResponseEntity<>(data, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<GenericResponse<HashMap<String, String>>> handleInvalidArgument(IllegalArgumentException exception) {
-        var data = GenericResponse.<HashMap<String, String>>builder()
+        var body = GenericResponse.<HashMap<String, String>>builder()
                 .message(exception.getMessage())
                 .success(false)
                 .build();
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -42,11 +42,11 @@ public class GlobalExceptionHandler {
             map.put(fieldError.getField(), fieldError.getDefaultMessage());
         });
 
-        var data = GenericResponse.<HashMap<String, String>>builder()
+        var body = GenericResponse.<HashMap<String, String>>builder()
                 .message("Invalid arguments")
                 .data((HashMap<String, String>) map)
                 .success(false)
                 .build();
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
