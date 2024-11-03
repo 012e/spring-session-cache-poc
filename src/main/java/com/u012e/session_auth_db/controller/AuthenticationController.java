@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -25,37 +24,32 @@ public class AuthenticationController {
     public GenericResponse<Map<String, String>> createUser(@NotNull @RequestBody UserDto userDto) {
         userService.register(userDto);
 
-        var body = GenericResponse.<Map<String, String>>builder()
+        return GenericResponse.<Map<String, String>>builder()
                 .message("user created")
                 .data(null)
                 .success(true)
                 .build();
-        return body;
     }
 
     @PostMapping("/login")
     public GenericResponse<Map<String, String>> login(@NotNull @RequestBody UserDto userDto, HttpServletResponse response) {
         userService.login(userDto, response);
 
-        var body = GenericResponse.<Map<String, String>>builder()
+        return GenericResponse.<Map<String, String>>builder()
                 .message("user logged in")
                 .data(null)
                 .success(true)
                 .build();
-
-        return body;
     }
 
     @GetMapping("/logout")
     public GenericResponse<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
         userService.logout(request, response);
 
-        var body = GenericResponse.<Map<String, String>>builder()
+        return GenericResponse.<Map<String, String>>builder()
                 .message("user logged out")
                 .data(null)
                 .success(true)
                 .build();
-
-        return body;
     }
 }

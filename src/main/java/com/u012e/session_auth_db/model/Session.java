@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// TODO: create index
 @Entity
-@Table(name = "sessions")
+@Table(name = "sessions", indexes = @Index(columnList = "token"))
 @Data
 @NoArgsConstructor
 public class Session {
