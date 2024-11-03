@@ -52,3 +52,5 @@ Ví dụ body: `{"username": "hello", "password": "world"}`.
 Cài đặt `SESSION_TOKEN` để lưu trữ thông tin session nếu đăng nhập thành công.
 Ví dụ body: `{"username": "hello", "password": "world"}`.
 - `/auth/logout`: Gỡ `SESSION_TOKEN` và xóa dữ liệu trong CSDL.
+
+Có thể xem chi tiết các endpoint ở http://localhost:8080/schema/swagger
