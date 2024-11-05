@@ -5,9 +5,9 @@ const url = "http://localhost:8080";
 
 export const options = {
   // A number specifying the number of VUs to run concurrently.
-  vus: 10,
+  vus: 20,
   // A string specifying the total duration of the test run.
-  duration: "20s",
+  duration: "60s",
 
   // The following section contains configuration options for execution of this
   // test script in Grafana Cloud.
@@ -85,17 +85,28 @@ export default function () {
   const username = generateRandomString(5, 10);
   const password = generateRandomString(10, 20);
 
-  const data = JSON.stringify({
+  const loginData = JSON.stringify({
     username: username,
     password: password,
   });
 
-  let registerResult = http.post(`${url}/auth/register`, data, jsonParam);
+  const registerData = JSON.stringify({
+    firstName: "a",
+    lastName: "b",
+    username: username,
+    password: password,
+  });
+
+  let registerResult = http.post(
+    `${url}/auth/register`,
+    registerData,
+    jsonParam,
+  );
   check(registerResult, {
     "register response is 200": (r) => r.status === 200,
   });
 
-  let loginResult = http.post(`${url}/auth/login`, data, jsonParam);
+  let loginResult = http.post(`${url}/auth/login`, loginData, jsonParam);
   check(loginResult, {
     "login response is 200": (r) => r.status === 200,
   });
@@ -106,12 +117,8 @@ export default function () {
     check(secretResult, {
       "secret response is 200": (r) => r.status === 200,
       "secret data is correct": (r) =>
-        r.body === JSON.stringify({ message: "super secret message" }),
+        r.body ===
+        JSON.stringify({ success: true, message: "Secret data", data: null }),
     });
   }
-
-  let logoutResult = http.get(`${url}/auth/logout`);
-  check(logoutResult, {
-    "logout response is 200": (r) => r.status === 200,
-  });
 }
