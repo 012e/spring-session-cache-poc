@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     container_name: app
-    command: --session.storage="cache-only"
+    command: --spring.profiles.active=cache
     ports:
       - '8080:8080'
     networks:
