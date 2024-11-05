@@ -1,3 +1,6 @@
+include:
+  - compose.data.yaml
+
 services:
   app:
     build:
@@ -7,28 +10,3 @@ services:
     command: --spring.profiles.active=database
     ports:
       - '8080:8080'
-    networks:
-      - default-network
-
-  postgres:
-    image: 'postgres:latest'
-    container_name: db
-    environment:
-      - 'POSTGRES_PASSWORD=user'
-      - 'POSTGRES_USER=user'
-      - 'POSTGRES_DB=postgres'
-    ports:
-      - '5432:5432'
-    networks:
-      - default-network
-
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
-    networks:
-      - default-network
-
-networks:
-    default-network: {}
