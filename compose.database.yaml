@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     container_name: app
-    command: --session.storage="database-only"
+    command: --spring.profiles.active=database
     ports:
       - '8080:8080'
     networks:
