@@ -38,10 +38,10 @@ public class SecurityConfiguration {
         // filter
         http.authorizeHttpRequests(
                 (request) -> {
-                    request.requestMatchers("/auth/login", "/auth/register", "/auth/logout").permitAll();
                     request.requestMatchers("/schema", "/schema/**").permitAll();
+                    request.requestMatchers("/public/**", "/actuator/**").permitAll();
+                    request.requestMatchers("/auth/login", "/auth/register", "/auth/logout").permitAll();
                     request.requestMatchers("/**").fullyAuthenticated();
-                    request.requestMatchers("/public/**").permitAll();
                 }
         );
 
