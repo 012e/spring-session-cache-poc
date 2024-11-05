@@ -10,7 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "students", indexes = @Index(columnList = "username"))
@@ -21,24 +23,35 @@ import java.util.List;
 public class Student implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private long id;
 
     @NotNull
-    @Column
+    @Column(nullable = false)
     private String firstName;
 
     @NotNull
-    @Column
-    private String lastName ;
+    @Column(nullable = false)
+    private String lastName;
 
     @NotNull
-    @Column
+    @Column(nullable = false)
     private String password;
 
     @NotNull
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(
+            name = "students_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
