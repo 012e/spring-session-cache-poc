@@ -16,6 +16,20 @@ Chạy lệnh sau để bắt đầu web server (sử dụng postgres + redis) �
 docker compose -f compose.cache.yaml up
 ```
 
+### Danh sách các port được mở
+
+- postgresql
+  - Port: 5432
+  - Username: user
+  - Password: user
+  - Database: postgres
+- redis
+  - Port: 6379
+  - Không username, password
+- spring boot:
+  - Port: 8080
+  - Có thể xem openapi schema ở http://localhost:8080/schema/swagger
+
 ## Benchmark
 
 ### Dependency
