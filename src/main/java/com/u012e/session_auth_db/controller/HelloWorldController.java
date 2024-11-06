@@ -8,7 +8,6 @@ import java.util.Map;
 
 @RestController
 public class HelloWorldController {
-
     @GetMapping("/secret")
     public GenericResponse<Map<String, String>> hello() {
         return GenericResponse.<Map<String, String>>builder()

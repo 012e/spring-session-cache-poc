@@ -28,6 +28,16 @@ public class SecurityConfiguration {
         return new HttpSessionEventPublisher();
     }
 
+    private static String[] whiteList = {
+            "/auth/login",
+            "/auth/register",
+            "/auth/logout",
+            "/schema",
+            "/schema/**",
+            "/public/**",
+            "/seed/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
@@ -38,10 +48,8 @@ public class SecurityConfiguration {
         // filter
         http.authorizeHttpRequests(
                 (request) -> {
-                    request.requestMatchers("/auth/login", "/auth/register", "/auth/logout").permitAll();
-                    request.requestMatchers("/schema", "/schema/**").permitAll();
+                    request.requestMatchers(whiteList).permitAll();
                     request.requestMatchers("/**").fullyAuthenticated();
-                    request.requestMatchers("/public/**").permitAll();
                 }
         );
 
